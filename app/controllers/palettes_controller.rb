@@ -19,9 +19,9 @@ class PalettesController < ApplicationController
     @palette = Palette.new(palette_params)
     respond_to do |format|
       if @palette.save
-        format.json { render json: @palette }
+        format.json { render status: :created, json: @palette }
       else
-        format.json { render json: @palette }
+        format.json { render json: @palette.errors, status: :unprocessable_entity }
       end
     end
   end
