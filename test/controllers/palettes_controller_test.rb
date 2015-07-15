@@ -39,7 +39,7 @@ class PalettesControllerTest < ActionController::TestCase
     end
   end
 
-  test 'POST #create does not work with invalid attributes' do
+  test 'POST #create does not work with INvalid attributes' do
     assert_no_difference('Palette.count') do
       post :create, palette: { name: "", dom_one: "", dom_two: "dom_two", pop: "pop", sec_one: "sec_one", sec_two: "sec_two" }, format: :json
       assert_response 422
@@ -50,6 +50,27 @@ class PalettesControllerTest < ActionController::TestCase
   end
 
   # update
+  test 'PUT #update works with valid attributes' do
+    put :update, id: @palette.id, palette: { name: "NEW TEST NAME", dom_one: "NEW TEST DOM ONE" }, format: :json
+    assert_response 200
+    response_item = JSON.parse(response.body)
+    assert "NEW TEST NAME" == response_item['name']
+    assert "NEW TEST DOM ONE" == response_item['dom_one']
+  end
+
+  test 'PUT #update does not work with INvalid attributes' do
+    put :update, id: @palette.id, palette: { name: "", dom_one: "" }, format: :json
+    assert_response 422
+    response_item = JSON.parse(response.body)
+    refute "" == response_item['name']
+    refute "" == response_item['dom_one']
+  end
+
   # destroy
+  test 'DELETE #destroy destroys entity' do
+    assert_difference('Palette.count', -1) do
+      delete :destroy, id: @palette.id, format: :json
+    end
+  end
 
 end

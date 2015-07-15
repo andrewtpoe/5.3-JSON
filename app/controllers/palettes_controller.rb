@@ -26,6 +26,28 @@ class PalettesController < ApplicationController
     end
   end
 
+  def update
+    @palette = get_palette
+    respond_to do |format|
+      if @palette.update_attributes(palette_params)
+        format.json { render json: @palette }
+      else
+        format.json { render json: @palette.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @palette = get_palette
+    respond_to do |format|
+      if @palette.destroy
+        format.json { redirect_to palettes_path, status: :destroyed }
+      else
+        format.json { render json: @palette.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   def get_palette
