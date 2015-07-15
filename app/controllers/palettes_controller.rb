@@ -17,9 +17,11 @@ class PalettesController < ApplicationController
 
   def create
     @palette = Palette.new(palette_params)
-    if @palette.save
-      respond_to do |format|
-        format.json { render :show, json: @palette }
+    respond_to do |format|
+      if @palette.save
+        format.json { render json: @palette }
+      else
+        format.json { render json: @palette }
       end
     end
   end

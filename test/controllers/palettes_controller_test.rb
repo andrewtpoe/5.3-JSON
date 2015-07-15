@@ -32,18 +32,21 @@ class PalettesControllerTest < ActionController::TestCase
   end
 
   # create
-  test 'POST #create' do
-    post :create, palette: { name: "test name", dom_one: "dom_one", dom_two: "dom_two", pop: "pop", sec_one: "sec_one", sec_two: "sec_two" }, format: :json
-    assert_response :success
-    response_item = JSON.parse(response.body)
-    assert_equal "test name", response_item['name']
-    assert_equal "dom_one", response_item['dom_one']
-    assert_equal "dom_two", response_item['dom_two']
-    assert_equal "pop", response_item['pop']
-    assert_equal "sec_one", response_item['sec_one']
-    assert_equal "sec_two", response_item['sec_two']
+  test 'POST #create works with valid attributes' do
+    assert_difference('Palette.count', 1) do
+      post :create, palette: { name: "test name", dom_one: "dom_one", dom_two: "dom_two", pop: "pop", sec_one: "sec_one", sec_two: "sec_two" }, format: :json
+      assert_response :success
+      response_item = JSON.parse(response.body)
+      assert_equal "test name", response_item['name']
+      assert_equal "dom_one", response_item['dom_one']
+      assert_equal "dom_two", response_item['dom_two']
+      assert_equal "pop", response_item['pop']
+      assert_equal "sec_one", response_item['sec_one']
+      assert_equal "sec_two", response_item['sec_two']
+    end
   end
 
+  test 'POST #create does not work with invalid attributes'
 # update
 # destroy
 
